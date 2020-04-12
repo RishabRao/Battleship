@@ -19,6 +19,7 @@ public class ExpertComputerPlayer extends Player {
 
     private boolean hasTimedOut;
     private boolean shouldEnterErrorState;
+    private boolean hitMultipleTargets;
 
     private ArrayList<Location> hits;
     private ArrayList<Location> allHits;
@@ -50,7 +51,7 @@ public class ExpertComputerPlayer extends Player {
         allHits = new ArrayList<>();
         possibleTargets = new ArrayList<>();
 
-
+        hitMultipleTargets = false;
         hasTimedOut = false;
         shouldEnterErrorState = false;
 
@@ -95,13 +96,13 @@ public class ExpertComputerPlayer extends Player {
 //        System.out.println(moves);
         int smallestTargetHits = 99999;
 
-        for(Ship ship : remainingShips.keySet()) {
-            if(remainingShips.get(ship) < smallestTargetHits) {
+        for (Ship ship : remainingShips.keySet()) {
+            if (remainingShips.get(ship) < smallestTargetHits) {
                 smallestTargetHits = remainingShips.get(ship);
             }
         }
 
-        if(hitsRemaining < smallestTargetHits && consecutiveMisses > 3) {
+        if (hitsRemaining < smallestTargetHits && consecutiveMisses > 3) {
             shouldEnterErrorState = true;
         }
 
@@ -120,6 +121,8 @@ public class ExpertComputerPlayer extends Player {
             getGuessBoard()[target.getRow()][target.getCol()] = 1;
             enemy.getShip(target.getLocation()).takeHit(target.getLocation());
 
+            hitMultipleTargets = false;
+
             hitsGivenToTarget++;
             hitsRemaining--;
             consecutiveMisses = 0;
@@ -131,18 +134,29 @@ public class ExpertComputerPlayer extends Player {
             }
 
             if (enemy.getShip(target.getLocation()).isSunk()) {
+
+                int length = enemy.getShip(target.getLocation()).getLocations().size();
+
                 enemy.removeShip(enemy.getShip(target.getLocation()));
+
                 for (Ship ship : remainingShips.keySet()) {
-                    if (remainingShips.get(ship) == hitsGivenToTarget) {
+                    if (remainingShips.get(ship) == length) {
                         remainingShips.remove(ship);
                         break;
                     }
                 }
+
+                if (length < hitsGivenToTarget) {
+                    hitMultipleTargets = true;
+                } else {
+                    hits = new ArrayList<>();
+                }
+
                 hitsGivenToTarget = 0;
-                hits = new ArrayList<>();
                 possibleTargets = new ArrayList<>();
                 landedSecondHit = false;
             }
+
         } else {
             getGuessBoard()[target.getRow()][target.getCol()] = -1;
             consecutiveMisses++;
@@ -168,6 +182,7 @@ public class ExpertComputerPlayer extends Player {
     private LocationWithFrequency getTargetingGuess() {
         refreshFrequencyTable();
         refreshPossibleTargets();
+
         int maxVal = -999;
         LocationWithFrequency targetLocation = null;
         for (LocationWithFrequency target : possibleTargets) {
@@ -175,7 +190,7 @@ public class ExpertComputerPlayer extends Player {
                 targetLocation = target;
             }
         }
-        if (landedSecondHit) {
+        if (landedSecondHit || hitMultipleTargets) {
             int row = -1;
             int col = -1;
             if (hits.get(0).getRow() == hits.get(1).getRow()) {
