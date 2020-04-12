@@ -145,49 +145,49 @@ public class ComputerPlayer extends Player {
     @Override
     public void populateShips() {
 
-//        addShip(new AircraftCarrier(new Location(0, 0),
-//                new Location(0, 1), new Location(0, 2),
-//                new Location(0, 3), new Location(0, 4)));
+        addShip(new AircraftCarrier(new Location(0, 0),
+                new Location(0, 1), new Location(0, 2),
+                new Location(0, 3), new Location(0, 4)));
+
+        addShip(new Cruiser(new Location(9, 0),
+                new Location(9, 1),
+                new Location(9, 2)));
+
+        addShip(new Destroyer(new Location(9, 3),
+                new Location(9, 4),
+                new Location(9, 5),
+                new Location(9, 6)));
+
+        addShip(new PatrolBoat(new Location(9, 7),
+                new Location(9, 8)));
+
+        addShip(new Submarine(new Location(6, 6),
+                new Location(6, 7),
+                new Location(6, 8)));
+//        int[] rotations = {0, 90, 180, 270};
 //
-//        addShip(new Cruiser(new Location(9, 0),
-//                new Location(9, 1),
-//                new Location(9, 2)));
+//        int maxAttempts = 100;
 //
-//        addShip(new Destroyer(new Location(9, 3),
-//                new Location(9, 4),
-//                new Location(9, 5),
-//                new Location(9, 6)));
+//        Random random = new Random();
 //
-//        addShip(new PatrolBoat(new Location(9, 7),
-//                new Location(9, 8)));
+//        int[] lenghts = {5, 4, 3, 3, 2};
 //
-//        addShip(new Submarine(new Location(6, 6),
-//                new Location(6, 7),
-//                new Location(6, 8)));
-        int[] rotations = {0, 90, 180, 270};
-
-        int maxAttempts = 100;
-
-        Random random = new Random();
-
-        int[] lenghts = {5, 4, 3, 3, 2};
-
-        for(int length : lenghts) {
-            int attempts = 0;
-            while (attempts < maxAttempts) {
-
-                int row = random.nextInt(10);
-                int col = random.nextInt(10);
-                int rotation = rotations[random.nextInt(4)];
-
-                if(placeToBoard(row, col, length, rotation)) {
-                    break;
-                }
-
-                attempts++;
-            }
-
-        }
+//        for(int length : lenghts) {
+//            int attempts = 0;
+//            while (attempts < maxAttempts) {
+//
+//                int row = random.nextInt(10);
+//                int col = random.nextInt(10);
+//                int rotation = rotations[random.nextInt(4)];
+//
+//                if(placeToBoard(row, col, length, rotation)) {
+//                    break;
+//                }
+//
+//                attempts++;
+//            }
+//
+//        }
     }
 
     public boolean placeToBoard(int row, int col, int length, int rotation) {
