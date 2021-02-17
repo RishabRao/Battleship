@@ -2,12 +2,9 @@ import java.util.ArrayList;
 
 public class Tester {
 
-
     public static void main(String[] args) {
 
         int numberOfGames = 100;
-
-
 
         for (int i = 0; i < numberOfGames; i++) {
 
@@ -34,11 +31,8 @@ public class Tester {
 //                } catch (InterruptedException ex) {
 //                    Thread.currentThread().interrupt();
 //                }
-
-
             }
             System.out.println(battleship.getWinner());
         }
     }
-
 }
